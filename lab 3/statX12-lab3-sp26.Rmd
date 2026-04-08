@@ -1,0 +1,96 @@
+---
+title: "STAT X12, Lab 3, Spring 2026"
+author: "ALL PARTICIPATING GROUP MEMBER NAMES HERE"
+date: 'Due: 2/11/26, 8am'
+output: html_document
+---
+
+### Instructions
+
+Work in your group to address all questions. Please use this skeleton .Rmd file as a template for addressing lab questions. ***Before you begin, save the document as, statX12-lab3-GROUP#ofyourgroup.Rmd***. Once you have saved the file with your group's identifying information, you should be able to knit the file to a .html or .docx (Word) (*Note:* this step requires that you have the packages `knitr` and `Rmarkdown` installed).
+
+Turn in a single *knitted document* for you group including everyone's full names in the author line. ***Please save your document as a .pdf BEFORE uploading it to the Lab3 assignment repository on Gradescope. This will ensure all figures show up appropriately for grading.*** You can discuss this lab with people outside of your lab group, but you must document any sources of information outside of your group and the materials I am providing you (like web resources and LLMs).
+
+***PLEASE DELETE OR COMMENT OUT THE INSTRUCTIONS (lines 8-14) BEFORE TURNING IN YOUR LAB***
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(show.signif.stars = FALSE)
+```
+
+## Part I: Model Assessment and Variable Selection Reflection
+
+1.  (5 pts) You should have completed Lab 2 and the variable selection activity. Discuss at least one concept that you solidified by working through the assignments and at least one thing you still feel uncertain about. Perhaps someone in your group will be able to help you clarify! For each member of your group, provide a note related to what was learned, solidified, or is still uncertain.
+
+-   **MEMBER1**
+-   **MEMBER2**
+-   **MEMBER3**
+
+## Part II: More Chapter 12 exploration
+
+For this section of the lab, we will investigate data collected by a gas multi-sensor device deployed in an Italian city.
+
+-   **Source** <https://archive.ics.uci.edu/ml/datasets/Air+Quality>; S. De Vito, E. Massera, M. Piga, L. Martinotto, G. Di Francia, On field calibration of an electronic nose for benzene estimation in an urban pollution monitoring scenario, Sensors and Actuators B: Chemical, Volume 129, Issue 2, 22 February 2008, Pages 750-757, ISSN 0925-4005
+
+**Data Set Information:**
+
+> "The dataset contains 9358 instances of hourly averaged responses from an array of 5 metal oxide chemical sensors embedded in an Air Quality Chemical Multisensor Device. The device was located on the field in a significantly polluted area, at road level, within an Italian city. Data were recorded from March 2004 to February 2005 (one year) representing the longest freely available recordings of on field deployed air quality chemical sensor devices responses. Ground Truth hourly averaged concentrations for CO, Non Metanic Hydrocarbons, Benzene, Total Nitrogen Oxides (NOx) and Nitrogen Dioxide (NO2) and were provided by a co-located reference certified analyzer. Evidences of cross-sensitivities as well as both concept and sensor drifts are present as described in De Vito et al., Sens. And Act. B, Vol. 129,2,2008 eventually affecting sensors concentration estimation capabilities. Missing values are tagged with -200 value. This dataset can be used exclusively for research purposes. Commercial purposes are fully excluded."
+
+2.  **(5 pts)** Based on the description above, which MLR assumption(s) could be severely violated if researchers were interested in predicting CO using other variables available, but not date-time?
+
+-   **YOUR RESPONSE HERE**
+
+The data were cleaned (-200 measures replaced with NA) and daily averages were created for days with at least 20 observations. These cleaned data are available in `air_quality.csv`. The following code reads in the data and creates a pairs plot. Turn `eval = TRUE` to view the plot.
+
+```{r question2, message=FALSE, warning=FALSE, eval = FALSE}
+aqi_df <- read.csv("air-quality.csv")
+head(aqi_df)
+ggpairs(aqi_df[,c(2:13,1)])
+```
+
+3.  **(5 pts)** Briefly discuss what you see in the pairs plot with respect to collinearity in this set of potential explanatory variables. Consider CO (carbon monoxide) as the response variable and others as potential predictors. The code chunk below also provides VIF values for a first-order model with all predictors.
+
+```{r question3, eval = FALSE}
+names(aqi_df)
+fit_firstorder <- lm(CO ~ tin_oxide + hydrocarbons + benzene + 
+              titania + NOx + tungsten_oxide + NO2_avg +
+              tungsten_oxide2 + indium_oxide + temp_C + 
+              rel_hum + abs_hum, data = aqi_df)
+car::vif(fit_firstorder)
+```
+
+-   *YOUR RESPONSE HERE*
+
+4.  **(5 pts)** Write a research question that aligns with *"Objective I: Adjusting"* with the only restriction being that CO is your response variable of interest. In your RQ indicate what order of $X$ terms you will investigate.
+
+-   *YOUR RQ HERE*
+
+5.  **(10 pts)** Carry out a sequential VS analysis to address the question you wrote in question 7. Be sure to communicate the choices you made along the way (e.g., what criterion will you use for the steps, what's your stopping condition, forward/backward/stepwise). Report your code (but not the output!) and the final model your VS landed on.
+
+```{r question5, eval = FALSE, results= "hide"}
+# your code here 
+```
+
+6.  **(5 pts)** Now, carry out an *all subsets* VS analysis. Is your top model the same model as the stepwise (sequential VS) method?
+
+```{r question 6, eval = FALSE}
+full_model <- # SPECIFY YOUR FULL MODEL HERE
+library(MuMIn) # Load the multi-model inference package
+# prevent fitting sub-models to different datasets 
+options(na.action = "na.fail") # Must be run to use dredge
+
+allSubsets_aqi <- dredge(full_model, rank = "BIC", 
+                         m.lim = c(3,10)) #Defaults into using
+
+# visualize results for all models within 4 BIC of top model
+# note you can play around with different subsets! 
+par(mar = c(3,5,6,4), mfrow = c(1,1)) 
+plot(subset(allSubsets_aqi, delta < 4),
+                           labAsExpr = TRUE)
+```
+
+-   *YOUR RESPONSE HERE*
+
+7.  **(5 pts)** Does your top model from the all-subsets analysis allow you to address your research question? Explain why or why not?
+
+-   *YOUR RESPONSE HERE*
