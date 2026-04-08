@@ -1,0 +1,6 @@
+* Cognitive Training Notes
+:PROPERTIES:
+:NOTER_DOCUMENT: cognitive_training_notes.org
+:END:
+#+Title: Impact of Cognitive training on claims-based diagnosed dementia over 20 years: evidence from the ACTIVE study:
+

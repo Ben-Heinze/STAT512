@@ -1,0 +1,29 @@
+#+Title: STAT 512 - Methods of Data Analysis Part 1, due April 6 @5pm
+#+Author: Ben Heinze
+
+# This is used to shrink the pdf page margins
+#+LATEX_HEADER: \usepackage[left=0.75in,right=0.75in,top=1in,bottom=1in]{geometry}
+
+# This is used to shrink the spacing between bullet points
+#+LATEX_HEADER: \usepackage{enumitem}
+#+LATEX_HEADER: \setlist[itemize]{itemsep=2pt, topsep=4pt}
+
+
+
+* Background
+
+Alzheimers disease and related dementias (ADRD) is an increasingly common issue as the neurological decline persists heavily in older adults.
+This set of diseases can take years to progress, which makes it difficult to conduct a long-term study.
+This paper, "Impact of cognitive training on claims-based diagnosed dementia over 20 years: evidence from the ACTIVE study" by Coe et. al. aimed to address this issue by linking previous data from the Advanced Cognitive Training for Independent and Vital Eldery (ACTIVE) dataset with Medicare claims data to create a 20-year follow up period to analyze.
+The researcher's goal was to attempt to find a correlation with cognitive training and a lower ADRD diagnosis rate in suspectible patients.
+The researchers randomized the participants into four cognitive interventions after baseline data was measured: memory-based, speed-based, reasoning-based, and a control group.
+If the subject completed eight of the 10 training sessions, the subjects were randomized once more for a potential secondary "booster" sessions that took plcae 11 and 35 months after baseline.
+
+** Description of Study Design
+
+
+
+* Sources
+
+
+* Questions I have
