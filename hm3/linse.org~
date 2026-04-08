@@ -1,0 +1,15 @@
+#+Title: Data-Driven Model Structure Notes
+#+Author: Ben Heinze
+
+# Removes the Table of Contents
+#+OPTIONS: toc:nil
+
+# This is used to shrink the pdf page margins
+#+LATEX_HEADER: \usepackage[left=0.75in,right=0.75in,top=1in,bottom=1in]{geometry}
+
+# This is used to shrink the spacing between bullet points
+#+LATEX_HEADER: \usepackage{enumitem}
+#+LATEX_HEADER: \setlist[itemize]{itemsep=2pt, topsep=4pt}
+
+
+* Intro 
