@@ -29,24 +29,25 @@ You can make model visualizations of the data itself by hand, or iuse DiagrammeR
 
 ** Linear Mixed Effects Models
 
-matched pair dedisn: treatment is applied at the observation level.
+matched pair design: treatment is applied at the observation level.
 
 
 
 * Question 1.
 
-Weight would have one subscript because it is a fixed effect. For example. If the sweat rate was measured in the same day, then weight would be at the subject level and probably wont vary across the repeated measurement recordings. No-tattoo has two subscripts because it counts as a treatment at the observation level because it varies across the repeated measures. 
+Weight only needs the single subscript $i$ because that is going to remain constant through each sweat measurement, so they only need to account for it on the subject level. The no-tattoo indicator, on the other hand, will change despite the subject being the same, so this is on the observation level.
 
 * Question 2.
 
 If the classmate used $age_{ij}$ despite it being measured one per subject, at the observation level, /modeldiagramR/ uses data to generate a corrected model diagram by checking if the value is constant across the random effects level for a node. 
   
-The software can determine if the predictor values are repeated for a fixed effect by checking if the value is constant across the random effects level for a node. v
+The software can determine if the predictor values are repeated for a fixed effect by checking if the value is constant across the random effects level for a node.
 
 
 * Question 3.
 
-I'd use the nlme package, which themodel_diagramR was based off of.
+I'd use the LearnVizLMM package to check the model diagram fro lab 7 before cleaning and wrangling the data because it doesn't require the data or a model object to draw the diagram.
+
 
 * Question 4
 
@@ -73,12 +74,13 @@ Measurement structure:
 
 Theoretical model:
 $\text{IQScore_{ij}} = \mu_{ij} + SU_{i} + \epsilon_{ij}$
-$\mu_{ij} = \beta_0 + \beta_1 I_{test 2} + \ldots + \beta_11 I_{test 12} + \beta_13 \text{beer_liters}} $
+$\mu_{ij} = \beta_0 + \beta_1 I_{test 2} + \ldots + \beta_11 I_{test 12} + \beta_13 \text{beer_liters}}$
 $SU_{i} \sim \mathcal{N} (0, \sigma^2_{person})$
 $\epsilon_{ij} \sim \mathcal{N} (0, \sigma^2)$
 
 Model params: 
 \beta_0: expected IQ for someone who doesn't drink
+
 
 
    
@@ -88,13 +90,19 @@ Measurement structure:
 - top level i: 15 states
 - middle level j: 20 counties within state
 - bottom level ijk: 50 households within county within state
-  
-- fixed effects at SU level (x_ij): state, county
-- Fixed effects at observation level (x_ijk): polical-leaning, age of youngest household, person-person-adj household income
-- random effects column: SU_i, \epsilon_{ij}
+
+Fixed effects: youngest household age(?), political-leaning (county),  
+Random effects: State, county, households, per-person-adjusted household income
+
+
+
+
+- SU level (x_ij): state, county, political-leaning
+- Observation level (x_ijk): youngest household age, per-person adjusted household income, household
+- random effects column: SU_i, \epsilon_{ijk}
 - i = 1-15 (index state)
 - j = 1-20 (index county)
-- j = 1-50 (index households)
+- k = 1-50 (index households)
 
 
 Theoretical model:

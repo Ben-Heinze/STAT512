@@ -1,0 +1,157 @@
+% Created 2026-04-10 Fri 13:47
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usepackage[left=0.75in,right=0.75in,top=1in,bottom=1in]{geometry}
+\usepackage{enumitem}
+\setlist[itemize]{itemsep=2pt, topsep=4pt}
+\author{Ben Heinze}
+\date{\today}
+\title{Data-Driven Model Structure Notes}
+\hypersetup{
+ pdfauthor={Ben Heinze},
+ pdftitle={Data-Driven Model Structure Notes},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 29.3 (Org mode 9.6.15)}, 
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+
+
+\section{Intro}
+\label{sec:orgf92701c}
+
+How do we visualize multivariate data?
+
+Random effects (top level; subject level; i): grouping structure var to account for random selection of groups. Usually drives the structure of model.
+Fixed effects (bottom level; observation level; ij ): exerpiment or the subjects being tested. Usually the reason for fitting the model
+
+Hierarchy consists of the levels of random effect at the top, and the observations (fixed effects) within each group at the bottom. Adding more random effects makes it more complex, like a tree-like structure. New perspective on model calling randome effects "varying coefficients in a multilevel model".
+
+Visualizing multivariate data: bivariate graph that points reponse againse 1 or more fixed efects at a time.
+
+2simultaneous multivariate data vis techniques use table plots and alluvial plots, but these are hard to visualize the different roles and contributioons the REs and the hierarchy have with both fixed effect and response variable. Complexity makes this issue worse.
+
+You can make model visualizations of the data itself by hand, or iuse DiagrammeR, but this is tedious. LLMs could be used but they still need verification. modeldiagramR solves this issue (nice plug).
+
+\subsection{Linear Mixed Effects Models}
+\label{sec:orga19045d}
+
+matched pair design: treatment is applied at the observation level.
+
+
+
+\section{Question 1.}
+\label{sec:org27af6d9}
+
+Weight only needs the single subscript \(i\) because that is going to remain constant through each sweat measurement, so they only need to account for it on the subject level. The no-tattoo indicator, on the other hand, will change despite the subject being the same, so this is on the observation level.
+
+\section{Question 2.}
+\label{sec:orge6663b5}
+
+If the classmate used \(age_{ij}\) despite it being measured one per subject, at the observation level, \emph{modeldiagramR} uses data to generate a corrected model diagram by checking if the value is constant across the random effects level for a node. 
+
+The software can determine if the predictor values are repeated for a fixed effect by checking if the value is constant across the random effects level for a node.
+
+
+\section{Question 3.}
+\label{sec:org93d1179}
+
+I'd use the LearnVizLMM package to check the model diagram fro lab 7 before cleaning and wrangling the data because it doesn't require the data or a model object to draw the diagram.
+
+
+\section{Question 4}
+\label{sec:org6a5c690}
+
+\begin{enumerate}
+\item measurement structure diagram
+\begin{itemize}
+\item top level and bottom level to describe observations in data set
+\item Column for fixed effects and random effects
+\item Define i and j.
+\end{itemize}
+\item Write theoretical model to address RQ
+\begin{itemize}
+\item define all variables and indices
+\end{itemize}
+\item Identify and interpret model parameters to address RQ.
+\end{enumerate}
+
+\subsection{Subquestion 1}
+\label{sec:org2911d4b}
+
+Measurement structure:
+\begin{itemize}
+\item top level i: person1, \ldots{}, person 25
+\item bottom level ij: 5 repeated measurements
+\item fixed effects column:
+\begin{itemize}
+\item people @SU level (x\textsubscript{i})  (since RQ cares about relationship between IQ and beer consumption, not variability in people)
+\item Time they took quiz, liters of beer consumed @obs level (x\textsubscript{ij})
+\end{itemize}
+\item random effects column: SU\textsubscript{i}, \(\epsilon\)\textsubscript{ij}
+\item i = 1-25 (index people)
+\item j = 1-12, (index observation within people (liters of beer for number of tests took))
+\end{itemize}
+
+
+Theoretical model:
+\(\text{IQScore_{ij}} = \mu_{ij} + SU_{i} + \epsilon_{ij}\)
+\(\mu_{ij} = \beta_0 + \beta_1 I_{test 2} + \ldots + \beta_11 I_{test 12} + \beta_13 \text{beer_liters}}\)
+\(SU_{i} \sim \mathcal{N} (0, \sigma^2_{person})\)
+\(\epsilon_{ij} \sim \mathcal{N} (0, \sigma^2)\)
+
+Model params: 
+\(\beta\)\textsubscript{0}: expected IQ for someone who doesn't drink
+
+
+
+
+\subsection{Subproblem 2.}
+\label{sec:orga1f6bfe}
+
+Measurement structure:
+\begin{itemize}
+\item top level i: 15 states
+\item middle level j: 20 counties within state
+\item bottom level ijk: 50 households within county within state
+\end{itemize}
+
+Fixed effects: youngest household age(?), political-leaning (county),  
+Random effects: State, county, households, per-person-adjusted household income
+
+
+
+
+\begin{itemize}
+\item SU level (x\textsubscript{ij}): state, county, political-leaning
+\item Observation level (x\textsubscript{ijk}): youngest household age, per-person adjusted household income, household
+\item random effects column: SU\textsubscript{i}, \(\epsilon\)\textsubscript{ijk}
+\item i = 1-15 (index state)
+\item j = 1-20 (index county)
+\item k = 1-50 (index households)
+\end{itemize}
+
+
+Theoretical model:
+\(\text{Diff_{ij}} = \mu_{ijk} + SU_{ij} + \epsilon_{ijk}\)
+\$\(\mu\)\textsubscript{ijk} = \(\beta\)\textsubscript{0} + \(\beta\)\textsubscript{1} I\textsubscript{test 2}  \$
+
+\(SU_{i} \sim \mathcal{N} (0, \sigma^2_{person})\)
+\(\epsilon_{ij} \sim \mathcal{N} (0, \sigma^2)\)
+
+Model params:
+\(\beta\)\textsubscript{0}: 
+\end{document}

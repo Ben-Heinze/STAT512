@@ -1,0 +1,10 @@
+#+Title: STAT 512 chp 18-19 notes
+
+* Page 7
+
+$log(\hat{\phi} \pm 1.96 SE(log(\hat{\phi}})$
+
+95% CI for $\phi$: (1.486, 19.470)
+
+We are 95% confident that the odds of the cancer group is between 1.49 and 19.47 times more likely than those who do not smoke.
+
