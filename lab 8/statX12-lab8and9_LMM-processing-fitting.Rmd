@@ -100,19 +100,48 @@ df_grip |>
 3. Merge `df_subj_clean` and `df_obs_clean` using `left_join`. _Hint: you may want to look at the help file for `left_join`_
 
 
+
 4. Restate your group's research question. If you did not consider an interactive relationship between hand and position, add that component to your research question.
 
 5.  You should have written out a theoretical model that can be used to address your group's question in Lab 7. Copy that model here (and adjust as needed to include interaction between hand and position) and identify the parameters of interest that will address the first component of your RQ (i.e., the interaction). 
+
+$gripstrength_{ij} = \mu_{ij} + student_i + \epsilon_{ij}$
+
+$\mu_{gripStregnth | forearm length, position, hand } = \beta_0 + \beta_1 I_{position=90} + \beta_2 I_{hand=non-dom} + \beta_3 forearm + \beta_4 I_{position=90} I_{hand=90}$
+
 
 ## Part II: Analysis 
 
 6. Create a raw data visualization that is appropriate for investigating an interactive relationship between _hand (non-dominant, dominant)_ and _position (straight, ninety)_ on _grip strength (lb)._ Be sure to appropriately display dependencies in repeated measurements and also include information about the covariate your group wants to account for using an additional encoding (e.g., color, shape, size) in your plot. Briefly describe what you see.  
 
+**insert plot here**
+
 7. Write code to estimate your model (specified in 5) using `lme` from `{nlme}` or `lmer` from `{lme4}`. No explanation necessary just fit the model. 
+
+```{r}
+library(lme4)
+fm1 <- lmer(grip_strength ~ position_clean *  hand_clean + forearm + (1 | subjectID), joined_df)
+summary(fm1)
+```
+
 
 8. Assess modeling assumptions using your brain and diagnostic plots (i.e., don't forget independence and be specific about what is assumed to be independent in your model!).
 
+```{r}
+library(predictmeans)
+?predictmeans
+residplot(fm1)
+
+```
+
+**Independence: I don't think that we have independence between students because it was a convenience sample, and we don't know if there are confounding variables between students who are in Statistics512 at Montana state university.**
+
+**Normality: There is some evidence against normalisty as the lower tail datapoints tend to deviate from the line of normality in the normal plot vs residuals**
+
+
 9. Regardless of your answer to 7, provide summary output and CIs for parameters in your model. No discussion necessary. 
+
+
 
 10. Conduct model refinement of your tentative inferential model as necessary. Provide a bulleted explanation of the steps in this process and the evidence supporting each step, or an explanation of why your tentative model will be your final inferential model. 
 
