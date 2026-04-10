@@ -1,4 +1,4 @@
-#+Title: Data-Driven Model Structure Notes
+#+title: Data-Driven Model Structure Notes
 #+Author: Ben Heinze
 
 # Removes the Table of Contents
@@ -11,37 +11,13 @@
 #+LATEX_HEADER: \usepackage{enumitem}
 #+LATEX_HEADER: \setlist[itemize]{itemsep=2pt, topsep=4pt}
 
-
-* Intro 
-
-How do we visualize multivariate data?
-
-Random effects (top level; subject level; i): grouping structure var to account for random selection of groups. Usually drives the structure of model.
-Fixed effects (bottom level; observation level; ij ): exerpiment or the subjects being tested. Usually the reason for fitting the model
-
-Hierarchy consists of the levels of random effect at the top, and the observations (fixed effects) within each group at the bottom. Adding more random effects makes it more complex, like a tree-like structure. New perspective on model calling randome effects "varying coefficients in a multilevel model".
-
-Visualizing multivariate data: bivariate graph that points reponse againse 1 or more fixed efects at a time.
-
-2simultaneous multivariate data vis techniques use table plots and alluvial plots, but these are hard to visualize the different roles and contributioons the REs and the hierarchy have with both fixed effect and response variable. Complexity makes this issue worse.
-
-You can make model visualizations of the data itself by hand, or iuse DiagrammeR, but this is tedious. LLMs could be used but they still need verification. modeldiagramR solves this issue (nice plug).
-
-** Linear Mixed Effects Models
-
-matched pair design: treatment is applied at the observation level.
-
-
-
 * Question 1.
 
 Weight only needs the single subscript $i$ because that is going to remain constant through each sweat measurement, so they only need to account for it on the subject level. The no-tattoo indicator, on the other hand, will change despite the subject being the same, so this is on the observation level.
 
 * Question 2.
 
-If the classmate used $age_{ij}$ despite it being measured one per subject, at the observation level, /modeldiagramR/ uses data to generate a corrected model diagram by checking if the value is constant across the random effects level for a node. 
-  
-The software can determine if the predictor values are repeated for a fixed effect by checking if the value is constant across the random effects level for a node.
+If the classmate used $age_{ij}$ despite it being measured one per subject, at the observation level, /modeldiagramR/ uses data to generate a corrected model by creating a model diagram based on the data, which would make this student's mistake clearly visible. 
 
 
 * Question 3.
@@ -62,24 +38,25 @@ I'd use the LearnVizLMM package to check the model diagram fro lab 7 before clea
 ** Subquestion 1
 
 Measurement structure:
-- top level i: person1, ..., person 25
-- bottom level ij: 5 repeated measurements
+
 - fixed effects column:
-  - people @SU level (x_i)  (since RQ cares about relationship between IQ and beer consumption, not variability in people)
+  - people @SU level (x_i)
   - Time they took quiz, liters of beer consumed @obs level (x_ij)
 - random effects column: SU_i, \epsilon_{ij}
 - i = 1-25 (index people)
-- j = 1-12, (index observation within people (liters of beer for number of tests took))
+- j = 1-12, (index observation within people (number of tests taken))
 
 
 Theoretical model:
-$\text{IQScore_{ij}} = \mu_{ij} + SU_{i} + \epsilon_{ij}$
+$\text{IQScore}_{ij} = \mu_{ij} + Person_{i} + \epsilon_{ij}$
 $\mu_{ij} = \beta_0 + \beta_1 I_{test 2} + \ldots + \beta_11 I_{test 12} + \beta_13 \text{beer_liters}}$
 $SU_{i} \sim \mathcal{N} (0, \sigma^2_{person})$
 $\epsilon_{ij} \sim \mathcal{N} (0, \sigma^2)$
 
 Model params: 
 \beta_0: expected IQ for someone who doesn't drink
+\beta_i = the change in intercept for test i compared to baseline
+\beta_13 = the change in intercept compared to baseline given the liter of beer they drank in the last two weeks.
 
 
 
@@ -96,7 +73,6 @@ Random effects: State, county, households, per-person-adjusted household income
 
 
 
-
 - SU level (x_ij): state, county, political-leaning
 - Observation level (x_ijk): youngest household age, per-person adjusted household income, household
 - random effects column: SU_i, \epsilon_{ijk}
@@ -106,7 +82,7 @@ Random effects: State, county, households, per-person-adjusted household income
 
 
 Theoretical model:
-$\text{Diff_{ij}} = \mu_{ijk} + SU_{ij} + \epsilon_{ijk}$
+$\text{Diff_{ij}} = \mu_{ijk} + State_{i} + county_{ij} + household_{ijk} + \epsilon_{ijk}$
 $\mu_{ijk} = \beta_0 + \beta_1 I_{test 2}  $
 
 $SU_{i} \sim \mathcal{N} (0, \sigma^2_{person})$
