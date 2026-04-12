@@ -1,9 +1,9 @@
 #+Title: Final Project - Part 2
 #+Author: Ben Heinze
-
+#+DATE: April 13, 2026
 
 # If you want to remove indent on every paragraph: #+STARTUP: noindent
-
+#+OPTIONS: toc:nil
 # This is used to shrink the pdf page margins
 #+LATEX_HEADER: \usepackage[left=0.75in,right=0.75in,top=1in,bottom=1in]{geometry}
 #+LATEX_HEADER: \usepackage{setspace}\n\doublespacing
@@ -17,8 +17,83 @@
 
 Read Higgs and Amhrien and revisit Ch 23/24 as necessary. Turn in a document that addresses the following.
 
-1. Read Higgs and Amhrein and Chp 23.4 and 23.5. In your own words, translate the cautions presented in Amhrein and Higgs to the content presented in 23.4 and 23.5. That is what "baggage" comes with the powre calculation methods discussed in the Sleth (Max 1/2 page double spaced).
+1. Read Higgs and Amhrein and Chp 23.4 and 23.5. In your own words, translate the cautions presented in Amhrein and Higgs to the content presented in 23.4 and 23.5. That is what "baggage" comes with the power calculation methods discussed in the Sleth (Max 1/2 page double spaced).
 
-2. **Quantitative Backdrop** Draw a "Quantitative Backdrop" for the parameter associated with a component of your reserach question that you could summarize with a confidence interval. Provide a complete picture with labeled intervals and complete descriptions of the practical implications of each interval.
+
+
+
+2. **Quantitative Backdrop** Draw a "Quantitative Backdrop" for the parameter associated with a component of your reserach question that you could summarize with a confidence interval.
+Provide a complete picture with labeled intervals and complete descriptions of the practical implications of each interval.
+
+
+
 
 3. Choose /one/ of the intervals in your backdrop (e.g., an interval that spans gray area and practically meaningful results). Write a /hypothetical/ summary of statistical findings to communicate results from this interval. Be sure to contextualize with appropriate scope of inference and practical context from your quantitative background.
+
+
+
+
+
+\newpage
+
+* Notes on Paper
+Intro:
+justifying your sample size choice is important. Power calculations are formulas for making up this number, but it's over-relied on and has problems. Quantitative backdrops is a part of the planning stages of the study that explicitely connects ranges of possible research outcomes to their expected real-life implications 
+
+Power-related concepts are sublt and intricate, which makes it very easy for most people to rely on it without knowing how the cogs work inside it.
+
+* Entering yptohetical nand of error rates
+
+type 1 error: reject when we shouldn't
+type 2 error: fail to reject when we should
+
+Power is the rate of rejection of an incorrect test hypothesis (reject when you should), the non-error complicment to a type 2 error. Powwer calculations are based on long-run rates of these errors over hypothestical sutdy replications. type 1 error rate ($\alpha$), type 2 error rate ($\beta$) and power ($1-\beta$).
+
+Error rates are conceptually based on hypothetical collection of many decsisions, a proportion of which are errors. **The collection of decisions is hypothetical because the decisions woould arise from many study replications that in real life aren't conducted; therefore error rates are hypothetical and these are the fundamental ingredients to justify real-life research decisions.** People like them because they are convenient.
+
+* Problems arising back in reality
+
+
+Real life error ates are unknown and difficult to fully conceptualize. We usually dont have data from multiple study replications, and we never know whether the decision about rejecting a hypothessis is in error for any individual study. Theoretical error rates are only as trustworthy as their assumed model of the process that generated the real-life data, which is inherently based off of assumptions which are usually violated in practice and uncertain by definition.
+
+
+
+power-related practices often see blatant ignorance of the underlying model and its connection to the theoretical error rates, leading to overconfident expectations about reality and questionable study design decisions.
+
+People excuse this as "we will be wrong 5% of the time", but this is only true if the stat model and every assumption is correct which is extremly hard to do. The word 'will' is overconfident.
+
+People think power is the probabilty of obtaining a statistically significant result; it is this probabilty if and only if the true effect is exactly equal to the alternative hypothesis used for power calculation, and if all other model assumptions are correct. Once again, this almost is never the case.
+
+Even though power is convenient, researchers should attempt to work out more sophisicated design and analysis princicpals to increase precision. This can, for example, decrease the number of animals used in animal testing research. This is not a straightforward practce, but it leads to more accurate research.
+
+* An alternative definition of success tied to research context.
+
+
+you can remove much of the baggage of error rates by shifting away from defining a research 'success' in terms of avoiding theoretical type 1 and type 2 errors. toward a context-dependent success that honors inevitable gray area in interpretation instead of, for exampel, forcing use of single values for null and alternative hypotheses.
+
+A successful study shold result in useful information about how compatible the data (and background assumptions) are with values large (or small) enough to be deemed practically important (clinically relevant) as compared with vales too small (or large) to be considered practically important. Do the best you can in the design phase to make such success possible, but youll almost never avoid results potentially consistent with the gray area between the two regions. This isn't a problem, this just highlights the challenges in interpretations that exist in real life, but are often idden behind the use of default criteria and assumptions in common methods.
+
+They give an example where anything not clincally relevant is < 6, 6-10 is gray, and 6> is clinically relevant. In this case, we'd want a sample size that'd give us an interval no wider than 4, since that'd make it impossible to for the interval to be both in 'clincally relevant' and 'not clinically relevant'.
+
+
+They talk about a study 'failing' by getting an answer that doesnt distinguishbetween the two regions associated with different conclusions. While the interval D isn't a classical succcess, it's useful information to inform future research that wouldve been thrown out of the reserachers used classical power analysis.
+
+The goal for a quantitative backdrop is to provide meaningful context in front of the study design instead of over-relying on arbitrary default statistical criteria.
+
+While the backdrop framework helps with sample size investigations, it is broader than that. It doesnt need to be involved with sample size caclulations to be helpful. For example, researchers are using the largset possible sample size possible that is ethical, logistical, or cost constraints and have dont as much work as possible to decrease background variances through design and analysis decisions. This excercise can help make decisions  aobout whether the reserach is worth carrying out given the width of an interval that can possibly be achieved and can serve justification of interpretations after data collection and analysis if a /priori/ interpretations are appropriately documented (pre-regestered).
+
+* Loosening out grip on interval endpoints
+
+"What values for a treatment effect are most compatible with the obtained data and themodel with all background assumptions"
+
+The end points are rigid; theres not a magical point where the numbers switch from "compatible" to "incompatible". Loosening this rigidity of endpoints can shift beliefs that we are calculating the one and onl sample size answer to undertaking an investigation that honors limiatations and challenges. This technique of using a collection of different quantiles to display the intervals can help with this challenge.
+
+To carr out a sample size calculation based on precision, we need a specific interval width. Sounds conteractive to loosening the rigid interval endpoints, but theres no conflict if we also relax our belief that there is a single correct answer to the sample size question and insteaaad use the exercise to motivate a nuanced investigation to help understand challenges inherent in carrying out the study.
+
+Avoidng using precision-based methods as power calculations in disguise:
+1. avoid using CIs to carry out hypothesis tests by simply checking whether they contain a hypothesized value (usually null effect)
+2. embrace /a priori/ work of developing context-specific backdrop identifying the range of values to be considered practically, or clinically, relevant, as well as the gray area in between
+3. create the backdrop using a scale that facilitates practical interpretation within context
+4. contrary to common advice, do not simply use a previously-obtained estimate to define the ranges of values in the backdrop (e.g., the 6 or 10 in figure 1).
+   - its common to use previous effect estimates such as pilot study results as the 'practically meaningful alternative values' in tradititional power calculations. this has negative implications for sample size justification: published effect estimates are often exaggerated, whcih can lead to sample sizes that are smaller than needed (if prev. estimate is larger than smallest deemed not relevent) or larger than needed (if previous estimate is smaller than what is deemed practically relevant). thers no reason a previous estimate should automatically be judged practically relevant - it can fall anywhere relative to the backdrop and should not change the /a priori/ developed backdrop.
+
