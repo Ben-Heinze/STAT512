@@ -1,0 +1,24 @@
+#+Title: Final Project - Part 2
+#+Author: Ben Heinze
+
+
+# If you want to remove indent on every paragraph: #+STARTUP: noindent
+
+# This is used to shrink the pdf page margins
+#+LATEX_HEADER: \usepackage[left=0.75in,right=0.75in,top=1in,bottom=1in]{geometry}
+#+LATEX_HEADER: \usepackage{setspace}\n\doublespacing
+
+# This is used to shrink the spacing between bullet points
+#+LATEX_HEADER: \usepackage{enumitem}
+#+LATEX_HEADER: \setlist[itemize]{itemsep=2pt, topsep=4pt}
+
+
+* Instructions
+
+Read Higgs and Amhrien and revisit Ch 23/24 as necessary. Turn in a document that addresses the following.
+
+1. Read Higgs and Amhrein and Chp 23.4 and 23.5. In your own words, translate the cautions presented in Amhrein and Higgs to the content presented in 23.4 and 23.5. That is what "baggage" comes with the powre calculation methods discussed in the Sleth (Max 1/2 page double spaced).
+
+2. **Quantitative Backdrop** Draw a "Quantitative Backdrop" for the parameter associated with a component of your reserach question that you could summarize with a confidence interval. Provide a complete picture with labeled intervals and complete descriptions of the practical implications of each interval.
+
+3. Choose /one/ of the intervals in your backdrop (e.g., an interval that spans gray area and practically meaningful results). Write a /hypothetical/ summary of statistical findings to communicate results from this interval. Be sure to contextualize with appropriate scope of inference and practical context from your quantitative background.
