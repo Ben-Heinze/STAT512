@@ -1,0 +1,5 @@
+* conclusion in context:
+
+There is evidence that an interaction between arm-position and hand-dominance is not likely. There does appear to be a negative impact on grip strength when testing their non-dominant hand compared to using their dominant hand. Similarly, testing grip strength with the user's arm-position to the side performed better than testing grip strength with the user's arm-position at a 90-degree angle. 
+The students were randomly assigned an order to test grip strength between the combinations of hand-dominance and arm-position, therefore we can conclude that there is a causal relationship between grip strength and combination of hand-dominance and arm-position.
+The people selected for gathering the dataset were a convenient sample of STATX12 students instead of a random selection, therefore we can only project these findings to Montana State University students in the spring 2026 semester taking STATX12 (assuming this is the only STATX12 class).

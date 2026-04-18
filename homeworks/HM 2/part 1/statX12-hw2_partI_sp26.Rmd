@@ -1,0 +1,86 @@
+---
+title: 'STAT X12: Homework 2'
+author: 'Due: Friday, 2/13, 5pm'
+output:
+  word_document: default
+  pdf_document: default
+fontsize: 12 pt
+---
+
+
+```{r setup, include=FALSE}
+library(faraway)
+library(tidyverse)
+library(GGally)
+library(dplyr)
+knitr::opts_chunk$set(echo = FALSE, 
+                      warning = FALSE, message = FALSE)
+options(show.signif.stars = FALSE)
+```
+
+
+## Part I - Variable Selection (can be turned in individually)
+
+__Instructions:__ ***Group work is encouraged, but is not necessary for this part of the assignment***. Please either work on your own to complete this part of the assignment or with a group of no more than 4 students. Please submit just one assignment per group and associate the names of all contributing group members with your assignment in GS. 
+
+1. You should have already read Chapter 12 in the Sleuth. Work through the conceptual exercises to assess your understanding (answers provided in the text). Also read _The Blind Men and the Elephant_ (posted on Brightspace), and provide an interpretation of the poem that relates to model selection techniques we have recently discussed. You will receive full credit for providing a thoughtful and coherent response that is _in your own words_ (i.e., please do not use LLMs for this problem, I want your thoughts!). 
+
+Read this article, _Sleep in Mammals: Ecological and Constitutional Correlates" by Allison, T. and Cicchetti, D. (1976), Science, November 12, vol. 194, pp. 732-734_ (posted Canvas). The Principle components analysis (PCA) discussed in the article is a dimension reduction technique that you can learn more about in an_ _Introduction to Statistical Learning_ (text referenced in Ch12 slides or STAT 437). Focus on the VS sections of the paper and answer the following questions about the article. 
+
+2. What type of variable selection did the authors use in this paper? Did they allow for interactions or higher order terms in their variable selection method? If it is not clear what they used, please state why. 
+3. Which objective (1,2, or 3 as discussed in course notes) do you think the variable selection was used for? 
+4. The authors state, "To determine the variables that predict sleep variability, we carried out stepwise multiple regression analysis in which SWS or PS were predicted (dependent) variables and the constitutional and ecological measures were predictors (independent) variables." In what ways could the use of the word "determine" be misleading in this context? 
+5. The authors present their top model for SWS as (1) in the paper. It is missing an important piece of notation. Correct the notation and report the estimated top model for SWS.
+6. Summarize the authors discussion of their findings with respect to the variables in the top model when the response is slow-wave "nondreaming" sleep (SWS). In your summary mention if the paper fell victim to the temptation to conduct hypothesis tests or make strong inferences for variables were already investigated with a VS technique. 
+    
+The data associated with the paper are provided in the `faraway` package (Faraway J, 2022). The code chunk below will read these data in and do some data cleaning for you so that you can investigate some of the decisions the authors made and compare your own analysis of these data to theirs. 
+```{r, echo = TRUE, eval = FALSE}
+# load packages
+#library(faraway)
+#library(tidyverse)
+#library(GGally)
+#data(mammalsleep)
+#? mammalsleep
+
+# make some transformations made by authors and reclass string variables 
+# to factors. 
+# remove rows with incomplete cases --- note this assumes the values were 
+# missing at random and there is no association between "missingness" and 
+# the outcome of the response variable. 
+sleep_df <- mammalsleep %>% 
+  mutate(exposure_level = factor(ifelse(exposure == 1, "Low", "High")), 
+         predation_c = factor(predation), # top two vars for Part II of HW
+         PS = dream, # rename to match paper
+         log_PS = log(dream + 0.05), # add 0.05 to all PS sleep times 
+          # to include mammal with 0 PS in analysis on log_PS scale
+         SWS = nondream, # rename to match paper
+         lgest = log(gestation), # log transformations from paper
+         lbrain = log(brain), 
+         lbody = log(body)) %>% 
+  drop_na() # remove mammals with NAs in any of the rows of the data frame 
+
+# create a data frame for part I analyses
+df_sleep <- sleep_df %>% 
+  dplyr::select(body, lbody, brain, lbrain, gestation, lgest, lifespan, 
+         predation, exposure, danger, sleep, PS, log_PS, SWS) 
+```
+
+7. Create a pairs plot of the `df_sleep` dataset and use it to explain why you think the paper used log-transformed variables for gestation length, body size, and brain size. Be sure to reference specific sub-plots within the pairs plot to answer this question. 
+
+```{r}
+# I'm assuming the prompt wants brain weight instead of brain size
+df_sleep %>% select(gestation, body, brain, SWS) |>
+  GGally::ggpairs()
+```
+
+8. Write code to run the `step` function to conduct forward selection with `SWS` as the response variable of interest and AIC as the model-selection criterion. Use `SWS ~ 1` as the starting model and a `scope` that includes all first order terms `(SWS ~ lbody + lbrain + lgest + lifespan + predation + exposure + danger)`. Include the output in your response to this question. 
+9. How do your results compare to the results presented in the paper? (i.e., How are they similar? How are they different?) What assumptions did you have to make about the analysis in the paper that could potentially explain any differences you observed in your analysis? _(max 1/4 page single-spaced)_
+
+10. Create a suite of diagnostic plots for the top model you found in 6. Assess each linear model assumption you can investigate using the plots and identify any severe violations. Be sure to reference specific features of specific plots in your response. 
+
+
+ 
+## References 
+
+Faraway J. (2022). _faraway: Functions and Datasets for Books by Julian Faraway_. R package version 1.0.8, https://CRAN.R-project.org/package=faraway 
+
