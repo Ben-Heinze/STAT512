@@ -1,0 +1,63 @@
+#+Title: STAT 512 - Final Report
+#+Author: Ben Heinze
+# This is used to shrink the pdf page margins
+#+LATEX_HEADER: \usepackage[left=0.75in,right=0.75in,top=1in,bottom=1in]{geometry}
+
+# This is used to shrink the spacing between bullet points
+#+LATEX_HEADER: \usepackage{enumitem}
+#+LATEX_HEADER: \setlist[itemize]{itemsep=2pt, topsep=4pt}
+
+* Introduction
+
+Alzheimers disease and related dementias (ADRD) is an increasingly common issue as the neurological decline persists heavily in older adults.
+This set of diseases can take years to progress, which makes it difficult to conduct a long-term study.
+This paper, "Impact of cognitive training on claims-based diagnosed dementia over 20 years: evidence from the ACTIVE study" by Coe et. al. aimed to address this issue by linking previous data from the Advanced Cognitive Training for Independent and Vital Eldery (ACTIVE) dataset with Medicare claims data to create a 20-year follow up period to analyze.
+The researcher's goal was to attempt to find a correlation with cognitive training and a lower ADRD diagnosis rate in suspectible patients.
+The researchers randomized the participants into four cognitive interventions after baseline data was measured: memory-based, speed-based, reasoning-based, and a control group.
+If the subject completed eight of the 10 training sessions, the subjects were randomized once more for a potential secondary "booster" sessions that took place 11 and 35 months after baseline.
+**Discuss the goals of the paper and the rest of this paper's layout.**
+**Addd overview of RQ, the context, and clearly state RQ.**
+
+* Methods
+
+** Field Methods/Study Design
+- Study design described thoroughly and completely
+  - add image of their subjects and how they were split into groups
+- Concept diagram included to aid description of study design
+- Research question
+
+** Proposed Statistical Procedure
+
+- Tentative theoretical model that allows you to address your RQ and includes any relevant information about the sampling design (if applicable). All variables defined, and identification of which parameters (e.g., partial regression coefficients, varaince parameters) allow you to address your RQ.
+- Description and sketch of at least one appropriate exploratory plot with description of what will be “looked for” in plot.
+- Plan for iteration/refinement of theoretical model for addressing research question. Can remain in bullets, but should provide a complete description of steps that would be taken (see part I above)
+
+
+** Quantitative Backdrop
+
+- Figure showing quantitative backdrop with sufficient decription of a variety of invervals that lead to different decisions/conclusions with a complete figure caption.
+- A one or two-sentence description of the backdrop.
+
+* Hypothetical Results/Summary of Statistical Findings 
+
+** Communication
+
+Communicate any expected steps in your model refinement process (e.g., the research context and ESS F-test suggest that additivity is reasonable in this setting ($F_{df_n, df_d}$ = close to 1, p-value = large)
+Write a hypthetical Summary of Statistical Findings for a chosen interval from your backdrop (Part III). Be sure to include an interpretation for the associated parameter of interest.
+
+** Visualization
+
+Describe at least one figure you could make, and provide a sketch to summarize results (e.g., effects plot (or your own plots) for visualizing and discussing more complex components in detail (i.e., interactions).)
+
+** Scope of Inference
+
+Write a conclusion conveying the practical implications of the results from your chosen interval. That is, describe what the results mean using the quantiative backdrop and propose next steps for research.
+
+
+** Conclusion
+
+* Notes and comments
+
+- Look up Cox Hazard Ratios
+- remove the mixed model part
+- add more qunantitative backdrop
