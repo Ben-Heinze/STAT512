@@ -1,13 +1,14 @@
 #+Title: STAT 512 - Final Report
 #+Author: Ben Heinze
 #+Date: April 20, 2026
-#+OPTIONS: toc:nil
+
 # This is used to shrink the pdf page margins
 #+LATEX_HEADER: \usepackage[left=0.75in,right=0.75in,top=1in,bottom=1in]{geometry}
 
 # This is used to shrink the spacing between bullet points
 #+LATEX_HEADER: \usepackage{enumitem}
 #+LATEX_HEADER: \setlist[itemize]{itemsep=2pt, topsep=4pt}
+#+LATEX_HEADER: \usepackage{float}
 
 * Introduction
 
@@ -20,14 +21,12 @@ Researchers aimed to determine whether cognitive training interventions impacted
 
 * Methods
 
-Provide a general idea for the methods section here.
-
 
 ** Field Methods/Study Design
 
 *** Study Design
 
-In an attempt to determine whether cognitive training intervention has an impact on the likelihood of an ADRD diagnosis, the original ACTIVE study recruited eligible subjects from six metropolitan areas (Pennsilvania State University, Indiana University, Hebrew Rehabilitation Center for the Aged, Johns Hopkins University, Wayne State University, and University of Alabama) between March 1998 and October 1999.
+In an attempt to determine whether cognitive training intervention has an impact on the likelihood of an ADRD diagnosis, the original ACTIVE study recruited eligible subjects from six metropolitan areas (Pennsylvania State University, Indiana University, Hebrew Rehabilitation Center for the Aged, Johns Hopkins University, Wayne State University, and University of Alabama) between March 1998 and October 1999.
 These participants were required to be 65+ years old, and pass a list of exclusion criterion.
 5000 people were assessed to be recruited in the study and 2802 of them were eligible; the participants were not selected randomly. The demographics consisted of a 26% minority, 76% female, with 13.7 year of average schooling, and 73.6 years old on average.
 The eligible participants were tested for baseline.
@@ -81,16 +80,49 @@ It is worth noting that they excluded patients with Medicare Advantage, which is
 
 ** Proposed Statistical Procedure
 
-- Tentative theoretical model that allows you to address your RQ and includes any relevant information about the sampling design (if applicable). All variables defined, and identification of which parameters (e.g., partial regression coefficients, varaince parameters) allow you to address your RQ.
-- Description and sketch of at least one appropriate exploratory plot with description of what will be “looked for” in plot.
-- Plan for iteration/refinement of theoretical model for addressing research question. Can remain in bullets, but should provide a complete description of steps that would be taken (see part I above)
+The researchers opted for a cause-specific Cox proportional hazard model. However, in my hypothetical proposed theoretical model, a generalized linear model with a binary reponses will be sufficient.
+First, the reponse is binary, so it follows a Bernoulli distribution, where the reponse Y is a "success" if the participant is diagnosed with ADRD by the end of the trial, and 0 otherwise.
+\[ Y \sim \text{Bernouli}(\pi), \text{where } P(Y=1) = \pi \]
+\[
+Y = \begin{cases} 1 & \text{if participant is diagnosed with ADRD by last follow-up} \\ 0 & \text{otherwise} \end{cases}
+\]
 
-The proposed theoretical model will use a generalized linear model with a binary reponse
+Next, since this is a logistic regression, the link function will be the logit of pi:
+\[ logit(\pi) = log \left( \frac{\pi}{1-\pi} \right) = \omega \]
 
-**Use a GLM with binary repoonse**
-**Talk to Katie about how I'd do this**
+The mean and the variance for $Y$ is:
+
+\[ \mu_{\pi} = \pi, \text{VAR}_{y} = \pi(1-\pi) \]
+
+Here is the linear predictor, which includes the four cognitive intervention arms, and the booster indicators.
+\[ logit(\pi) = \beta_0 + \beta_1 I_{arm = speed} + \beta_2 I_{arm = memory} + \beta_3 I_{arm=reasoning} + \beta_4 I_{booster} + \beta_6 I_{j} + \ldots + \beta_{10} I_{J}\] 
+
+Where $j = 1, \ldots, 5$ for the six different location sites.
+
+Parameters:
+- $\beta_0$: The baseline paramter for whether a participant is diagnosed with ADRD and did not take any intervention arm, did not participate in booster sessions, were located in the first first site: Pennsylvania State University, where the age is 0. 
+- $\beta_1 - \beta_3$: The parameters associated with the three other cognitive training arms. 
+- $\beta_4$: The parameter associated with whether booster sessions were perscribed. 
+- $\beta_5$: The parameter associated with age.
+- $\beta_6 - \beta_{10}$: Parameters associated with the other five sites: Indiana University, Hebrew Rehabilitation Center for the Aged, Johns Hopkins University, Wayne State University, and University of Alabama.
 
 
+I would choose a simple mosiac plot for exploratory analysis, there would be two rows to signify whether the patient was diagnosed with ADRD or not, and each column would represent the different intervention methods. In this plot, I would look at the ratio of "diagnosed"/"not diagnosed".
+
+
+#+ATTR_LATEX: :placement [H]
+#+CAPTION: Sketch of a mosaic plot for the different cognitive intervention arms.
+#+NAME: fig:mosaic
+#+ATTR_LATEX: :width 0.7\linewidth :center t
+[[./mosaic.jpg]]
+
+
+For plans of refinement include:
+- Fit model
+- Use a step-wise variable selection to assess potential important variables
+- Test for interaction between intervention arm and booster
+- Create diagnostic plots and assess assumptions
+  
 ** Quantitative Backdrop
 
 Figure [[fig:backdrop]] shows the adjusted hazard risk confidence intervals for the speed cognitive training intervention arm with booster intervention sessions (interval A), and the speed cognitive intervention arm without booster intervention sessions (interval B).
@@ -109,34 +141,38 @@ Interval A represents the hazard risk interval for the speed-intervention arm wh
 Interval B represents the hazard risk interval for participants in the speed-intervention arm who were not given the booster sessions (HR: 1.01 95%CI: 0.81, 1.27) relative to the group who had no cognitive intervention.
 To remove the rigid limit of the confidence intervals, we define values closer to the point-estimate as more compatible with our findings, and values further from the point-estimate as less compatible with our findings.
 
+
 * Hypothetical Results/Summary of Statistical Findings 
 
 ** Communication
 
-Write a hypthetical Summary of Statistical Findings for a chosen interval from your backdrop (Part III). Be sure to include an interpretation for the associated parameter of interest.
 
+To test for an interaction between the cognitive intervention arms and booster sessions, we can use a type 1 ANOVA test. Let us assume that there is strong evidence that there is an interaction between the speed cognitive training intervention and the use of booster sessions (F = high, p-value < very small).
 
-This paper used another paper's power calculation, "ACTIVE: A Cognitive Intervention Trial to Promote Independence in Older Adults", which used a range of 0.20 as their definition of an effective treatment. To determine
+Once the model is ready, the Wald-based confidence interval for each $\hat{\beta}_i$, then we can convert it to the odds scale for interpretation: We are 95% confident that there is  (95% CI:lowerbound, upperbound)
 
+\[ \beta_1 \pm 1.96 SE \left( \hat{\beta_1} \right) = (exp\{\text{lowerbound}\}, exp\{\text{upperbound}\}) = (\text{loweround, upperbound}) \]
 
-Summary of Statistical Findings for a chosen interval from the backdrop, including a parameter of interest:
+It is estimated that the speed cognitive training intervention relative to baseline lies between /lowerbound/ and /upperbound/ on the odds scale, after accounting for booster sessions (95%CI: (lowerbound, upperbound),  Z= high, p-value = small).
 
 
 ** Visualization
 
 Since we are using a logistic regression GLM to model the the likelihood of developing ADRD after the 20-year follow-up for each intervention arm and booster status, we have a few choices for visualizing the results. In this scenario, tableplots would provide the most information in a single plot. The hazard risk would be the y-axis, with an HR of 1.00 to split the plot. Then, we can see the how the likelihood differs between cognitive intervention training and booster status, age, sex, and other factors.
 
-
+#+ATTR_LATEX: :placement [H]
+#+NAME: fig:visualization
+#+ATTR_LATEX: :width 0.7\linewidth :center t
 #+CAPTION: Illustration of what a tableplot for the impact of cognitive training invervention arms on likelihood of ADRD diagnosis.
-file:visualization.png
+file:visualization.jpg
 
 Describe at least one figure you could make, and provide a sketch to summarize results (e.g., effects plot (or your own plots) for visualizing and discussing more complex components in detail (i.e., interactions).)
 
-** Scope of Inference
+* Scope of Inference
 
 For 65+ year old patients recruited between March 1998 and October 1999 with Medicare who reside in one of the six metropolitan areas (Pennsylvania State University, Indiana University, Hebrew Rehabilitation Center for the Aged, Johns Hopkins University, Wayne State University, and University of Alabama) who do not have any of the following concerns: significant cognitive dysfunction (MMSE score < 23), functional impairment, self- reported diagnosis of Alzheimer's, a stroke within the last 12 months, certain cancers, and those who are undergoing chemotherapy/radiation therapy, there is strong evidence that there is a lower hazard risk for patients who participated in the speed-intervention arm that were given booster sessions compared to those who did not perform in any intervention arms (Cox hazard risk: 0.75, 95% CI: 0.59-0.95). Results closer to 0.75 are more compatible with the data, while results closer to the interval's boundaries are less compatible with the data. Since this study conducted a random assignment for the intervention arm and the booster sessions, this study accounted for the confounding variables which provides strong evidence that there is a causal relationship between cognitive intervention arm and reduced likelihood of being diagnosed with ADRD. Researchers took note of possible covariates, and adjusted the intervals accordingly.
 
 
-** Conclusion
+* Conclusion
 
 

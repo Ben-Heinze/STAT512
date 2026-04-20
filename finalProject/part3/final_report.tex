@@ -1,4 +1,4 @@
-% Created 2026-04-19 Sun 19:41
+% Created 2026-04-20 Mon 00:17
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -15,6 +15,7 @@
 \usepackage[left=0.75in,right=0.75in,top=1in,bottom=1in]{geometry}
 \usepackage{enumitem}
 \setlist[itemize]{itemsep=2pt, topsep=4pt}
+\usepackage{float}
 \author{Ben Heinze}
 \date{April 20, 2026}
 \title{STAT 512 - Final Report}
@@ -28,9 +29,11 @@
 \begin{document}
 
 \maketitle
+\tableofcontents
+
 
 \section{Introduction}
-\label{sec:org31003d8}
+\label{sec:org1ea4a14}
 
 Alzheimer's disease and related dementias (ADRD) is an increasingly common issue as the neurological decline persists heavily in older adults.
 This set of diseases can take years to progress, which makes it difficult to conduct a long-term study.
@@ -40,18 +43,16 @@ If the subject completed eight of the 10 initial training sessions, they had a r
 Researchers aimed to determine whether cognitive training interventions impacted the likelihood of being diagnosed with ADRD in susceptible patients, and if so, discover which approach is most effective, after a 20-year follow-up.
 
 \section{Methods}
-\label{sec:orgd2fa365}
-
-Provide a general idea for the methods section here.
+\label{sec:org3cf0f51}
 
 
 \subsection{Field Methods/Study Design}
-\label{sec:org517742e}
+\label{sec:org670fb7f}
 
 \subsubsection{Study Design}
-\label{sec:org24cc4b9}
+\label{sec:org827452a}
 
-In an attempt to determine whether cognitive training intervention has an impact on the likelihood of an ADRD diagnosis, the original ACTIVE study recruited eligible subjects from six metropolitan areas (Pennsilvania State University, Indiana University, Hebrew Rehabilitation Center for the Aged, Johns Hopkins University, Wayne State University, and University of Alabama) between March 1998 and October 1999.
+In an attempt to determine whether cognitive training intervention has an impact on the likelihood of an ADRD diagnosis, the original ACTIVE study recruited eligible subjects from six metropolitan areas (Pennsylvania State University, Indiana University, Hebrew Rehabilitation Center for the Aged, Johns Hopkins University, Wayne State University, and University of Alabama) between March 1998 and October 1999.
 These participants were required to be 65+ years old, and pass a list of exclusion criterion.
 5000 people were assessed to be recruited in the study and 2802 of them were eligible; the participants were not selected randomly. The demographics consisted of a 26\% minority, 76\% female, with 13.7 year of average schooling, and 73.6 years old on average.
 The eligible participants were tested for baseline.
@@ -64,7 +65,7 @@ Acumen's matching algorithm matched 71\% of the original participants from the A
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.7\linewidth]{study_design.png}
-\caption{\label{fig:orged9e7b2}Graphical representation of ACTIVE dataset Study Design.}
+\caption{\label{fig:org9fa6f68}Graphical representation of ACTIVE dataset Study Design.}
 \end{figure} 
 
 This study had a control group where no intervention was used, which also means the participants had no opportunity to recieve booster training sessions.
@@ -93,7 +94,7 @@ Confounding variables to be controlled by analysis (covariates) are the pre-spec
 The outline of statistical analysis has sites (six levels), patients have the type of intervention arm (four levels), then the booster sessions (two levels). The interaction between the intervention arm and the booster sessions will be included.
 
 \subsubsection{Research Question}
-\label{sec:orgd240a4a}
+\label{sec:org562c15d}
 
 The research question for this academic paper wonders if intervention via cognitive training effects the likelihood (hazard risk) of being diagnosed with ADRD over a 20-year follow-up time frame.
 The authors of this paper conducted this research with a modified cause-specific Cox proportional hazard model which reported the odds of being diagnosed with ADRD.
@@ -108,24 +109,59 @@ It is worth noting that they excluded patients with Medicare Advantage, which is
 
 
 \subsection{Proposed Statistical Procedure}
-\label{sec:orgf5b688e}
+\label{sec:org4570bae}
 
+The researchers opted for a cause-specific Cox proportional hazard model. However, in my hypothetical proposed theoretical model, a generalized linear model with a binary reponses will be sufficient.
+First, the reponse is binary, so it follows a Bernoulli distribution, where the reponse Y is a "success" if the participant is diagnosed with ADRD by the end of the trial, and 0 otherwise.
+\[ Y \sim \text{Bernouli}(\pi), \text{where } P(Y=1) = \pi \]
+\[
+Y = \begin{cases} 1 & \text{if participant is diagnosed with ADRD by last follow-up} \\ 0 & \text{otherwise} \end{cases}
+\]
+
+Next, since this is a logistic regression, the link function will be the logit of pi:
+\[ logit(\pi) = log \left( \frac{\pi}{1-\pi} \right) = \omega \]
+
+The mean and the variance for \(Y\) is:
+
+\[ \mu_{\pi} = \pi, \text{VAR}_{y} = \pi(1-\pi) \]
+
+Here is the linear predictor, which includes the four cognitive intervention arms, and the booster indicators.
+\[ logit(\pi) = \beta_0 + \beta_1 I_{arm = speed} + \beta_2 I_{arm = memory} + \beta_3 I_{arm=reasoning} + \beta_4 I_{booster} + \beta_6 I_{j} + \ldots + \beta_{10} I_{J}\] 
+
+Where \(j = 1, \ldots, 5\) for the six different location sites.
+
+Parameters:
 \begin{itemize}
-\item Tentative theoretical model that allows you to address your RQ and includes any relevant information about the sampling design (if applicable). All variables defined, and identification of which parameters (e.g., partial regression coefficients, varaince parameters) allow you to address your RQ.
-\item Description and sketch of at least one appropriate exploratory plot with description of what will be “looked for” in plot.
-\item Plan for iteration/refinement of theoretical model for addressing research question. Can remain in bullets, but should provide a complete description of steps that would be taken (see part I above)
+\item \(\beta_0\): The baseline paramter for whether a participant is diagnosed with ADRD and did not take any intervention arm, did not participate in booster sessions, were located in the first first site: Pennsylvania State University, where the age is 0.
+\item \(\beta_1 - \beta_3\): The parameters associated with the three other cognitive training arms.
+\item \(\beta_4\): The parameter associated with whether booster sessions were perscribed.
+\item \(\beta_5\): The parameter associated with age.
+\item \(\beta_6 - \beta_{10}\): Parameters associated with the other five sites: Indiana University, Hebrew Rehabilitation Center for the Aged, Johns Hopkins University, Wayne State University, and University of Alabama.
 \end{itemize}
 
-The proposed theoretical model will use a generalized linear model with a binary reponse
 
-\textbf{\textbf{Use a GLM with binary repoonse}}
-\textbf{\textbf{Talk to Katie about how I'd do this}}
+I would choose a simple mosiac plot for exploratory analysis, there would be two rows to signify whether the patient was diagnosed with ADRD or not, and each column would represent the different intervention methods. In this plot, I would look at the ratio of "diagnosed"/"not diagnosed".
 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\linewidth]{./mosaic.jpg}
+\caption{\label{fig:orgd45528c}Sketch of a mosaic plot for the different cognitive intervention arms.}
+\end{figure}
+
+
+For plans of refinement include:
+\begin{itemize}
+\item Fit model
+\item Use a step-wise variable selection to assess potential important variables
+\item Test for interaction between intervention arm and booster
+\item Create diagnostic plots and assess assumptions
+\end{itemize}
 
 \subsection{Quantitative Backdrop}
-\label{sec:orgfef9279}
+\label{sec:org50a9cdb}
 
-Figure \ref{fig:org59c249a} shows the adjusted hazard risk confidence intervals for the speed cognitive training intervention arm with booster intervention sessions (interval A), and the speed cognitive intervention arm without booster intervention sessions (interval B).
+Figure \ref{fig:orgd7ebbfb} shows the adjusted hazard risk confidence intervals for the speed cognitive training intervention arm with booster intervention sessions (interval A), and the speed cognitive intervention arm without booster intervention sessions (interval B).
 Since this metric is relative to the baseline, we attribute 1.00 as the null hypothesis that there is no evidence for a change in likelihood of being diagnosed with ADRD.
 The blue region represents strong evidence that there may be a lower likelihood of being diagnosed with ADRD for the given treatments.
 The green region represents strong evidence that there may be a higher likelihood of being diagnosed with ADRD for the given treatments.
@@ -134,7 +170,7 @@ The gray region represents the boundaries in which the change in likelihood of b
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.8\linewidth]{quantitative_backdrop.jpg}
-\caption{\label{fig:org59c249a}Quantitative backdrop for visualizing the confidence intervals for the adjusted Cox hazard risk model for predicting the likelihood of being diagnosed with ADRD after completing the speed intervention arm with a booster (interval A) and without a booster (interval B) relative to the likelihood of being diagnosed with ADRD with no cognitive intervention after a 20-year long follow-up.}
+\caption{\label{fig:orgd7ebbfb}Quantitative backdrop for visualizing the confidence intervals for the adjusted Cox hazard risk model for predicting the likelihood of being diagnosed with ADRD after completing the speed intervention arm with a booster (interval A) and without a booster (interval B) relative to the likelihood of being diagnosed with ADRD with no cognitive intervention after a 20-year long follow-up.}
 \end{figure}
 
 
@@ -142,41 +178,42 @@ Interval A represents the hazard risk interval for the speed-intervention arm wh
 Interval B represents the hazard risk interval for participants in the speed-intervention arm who were not given the booster sessions (HR: 1.01 95\%CI: 0.81, 1.27) relative to the group who had no cognitive intervention.
 To remove the rigid limit of the confidence intervals, we define values closer to the point-estimate as more compatible with our findings, and values further from the point-estimate as less compatible with our findings.
 
+
 \section{Hypothetical Results/Summary of Statistical Findings}
-\label{sec:org0805103}
+\label{sec:orgc5ba91c}
 
 \subsection{Communication}
-\label{sec:orgc5a1770}
-
-Write a hypthetical Summary of Statistical Findings for a chosen interval from your backdrop (Part III). Be sure to include an interpretation for the associated parameter of interest.
+\label{sec:org2b60091}
 
 
-This paper used another paper's power calculation, "ACTIVE: A Cognitive Intervention Trial to Promote Independence in Older Adults", which used a range of 0.20 as their definition of an effective treatment. To determine
+To test for an interaction between the cognitive intervention arms and booster sessions, we can use a type 1 ANOVA test. Let us assume that there is strong evidence that there is an interaction between the speed cognitive training intervention and the use of booster sessions (F = high, p-value < very small).
 
+Once the model is ready, the Wald-based confidence interval for each \(\hat{\beta}_i\), then we can convert it to the odds scale for interpretation: We are 95\% confident that there is  (95\% CI:lowerbound, upperbound)
 
-Summary of Statistical Findings for a chosen interval from the backdrop, including a parameter of interest:
+\[ \beta_1 \pm 1.96 SE \left( \hat{\beta_1} \right) = (exp\{\text{lowerbound}\}, exp\{\text{upperbound}\}) = (\text{loweround, upperbound}) \]
+
+It is estimated that the speed cognitive training intervention relative to baseline lies between \emph{lowerbound} and \emph{upperbound} on the odds scale, after accounting for booster sessions (95\%CI: (lowerbound, upperbound),  Z= high, p-value = small).
 
 
 \subsection{Visualization}
-\label{sec:org350621b}
+\label{sec:org4caf34a}
 
 Since we are using a logistic regression GLM to model the the likelihood of developing ADRD after the 20-year follow-up for each intervention arm and booster status, we have a few choices for visualizing the results. In this scenario, tableplots would provide the most information in a single plot. The hazard risk would be the y-axis, with an HR of 1.00 to split the plot. Then, we can see the how the likelihood differs between cognitive intervention training and booster status, age, sex, and other factors.
 
-
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
-\includegraphics[width=.9\linewidth]{visualization.png}
-\caption{Illustration of what a tableplot for the impact of cognitive training invervention arms on likelihood of ADRD diagnosis.}
+\includegraphics[width=0.7\linewidth]{visualization.jpg}
+\caption{\label{fig:org0aa2943}Illustration of what a tableplot for the impact of cognitive training invervention arms on likelihood of ADRD diagnosis.}
 \end{figure}
 
 Describe at least one figure you could make, and provide a sketch to summarize results (e.g., effects plot (or your own plots) for visualizing and discussing more complex components in detail (i.e., interactions).)
 
-\subsection{Scope of Inference}
-\label{sec:orgec7de13}
+\section{Scope of Inference}
+\label{sec:orgc4e4b41}
 
 For 65+ year old patients recruited between March 1998 and October 1999 with Medicare who reside in one of the six metropolitan areas (Pennsylvania State University, Indiana University, Hebrew Rehabilitation Center for the Aged, Johns Hopkins University, Wayne State University, and University of Alabama) who do not have any of the following concerns: significant cognitive dysfunction (MMSE score < 23), functional impairment, self- reported diagnosis of Alzheimer's, a stroke within the last 12 months, certain cancers, and those who are undergoing chemotherapy/radiation therapy, there is strong evidence that there is a lower hazard risk for patients who participated in the speed-intervention arm that were given booster sessions compared to those who did not perform in any intervention arms (Cox hazard risk: 0.75, 95\% CI: 0.59-0.95). Results closer to 0.75 are more compatible with the data, while results closer to the interval's boundaries are less compatible with the data. Since this study conducted a random assignment for the intervention arm and the booster sessions, this study accounted for the confounding variables which provides strong evidence that there is a causal relationship between cognitive intervention arm and reduced likelihood of being diagnosed with ADRD. Researchers took note of possible covariates, and adjusted the intervals accordingly.
 
 
-\subsection{Conclusion}
-\label{sec:org7310cd3}
+\section{Conclusion}
+\label{sec:org481ba02}
 \end{document}
