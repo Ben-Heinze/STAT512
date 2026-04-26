@@ -12,6 +12,7 @@
 
 * Introduction
 
+
 Alzheimer's disease and related dementias (ADRD) is an increasingly common issue as the neurological decline persists heavily in older adults.
 This set of diseases can take years to progress, which makes it difficult to conduct a long-term study.
 This paper, "Impact of cognitive training on claims-based diagnosed dementia over 20 years: evidence from the ACTIVE study" by Coe et. al. aimed to address this issue by linking previous data gathered from the Advanced Cognitive Training for Independent and Vital Eldery (ACTIVE) dataset with Medicare claims data to create a 20-year follow up period to analyze; 2021 out of the original 2802 were eligible for the 20-year follow-up analysis. Medicare is the United State's federal health insurance program for people over the age of 65.
@@ -30,9 +31,7 @@ In an attempt to determine whether cognitive training intervention has an impact
 These participants were required to be 65+ years old, and pass a list of exclusion criterion.
 5000 people were assessed to be recruited in the study and 2802 of them were eligible; the participants were not selected randomly. The demographics consisted of a 26% minority, 76% female, with 13.7 year of average schooling, and 73.6 years old on average.
 The eligible participants were tested for baseline.
-**Talk about what baseline data is?**
 Next, they were randomized into one of the four intervention arms: memory, speed, reasoning, and control.
-**Talk about how the intervetion arms worked.**
 Patients who completed eight out of 10 training sessions were eligible for the booster addition, and which group a patient was assigned to (booster, no booster) was randomized as well, with the exception of the controlled intervention group.
 Acumen's matching algorithm matched 71% of the original participants from the ACTIVE study to the Medicare claims data by matching social security numbers, date of births, and gender, after excluding 725 participants who enrolled in Medicare Advantage due to incomplete data, eight participants who passed away, and nine participants who were diagnosed with ADRD upon entering ACTIVE.
 
@@ -66,9 +65,8 @@ The outline of statistical analysis has sites (six levels), patients have the ty
 
 *** Research Question
 
-The research question for this academic paper wonders if intervention via cognitive training effects the likelihood (hazard risk) of being diagnosed with ADRD over a 20-year follow-up time frame.
+The research question for this academic paper wonders if intervention via cognitive training effects the likelihood (hazard risk) of being diagnosed with ADRD over a 20-year follow-up time frame. 
 The authors of this paper conducted this research with a modified cause-specific Cox proportional hazard model which reported the odds of being diagnosed with ADRD.
-**Change to add logistic regression**
 The theoretical model would contain the hazard rate adjusted for covariates as the response variable, and the intervetion arm, and the booster as the explanatory variables. 
 Other factors such as age and number of years of education may be added.
 Performing a step-wise variable selection may benefit our model.
@@ -118,15 +116,15 @@ I would choose a simple mosiac plot for exploratory analysis, there would be two
 
 
 For plans of refinement include:
-- Fit model
-- Use a step-wise variable selection to assess potential important variables
-- Test for interaction between intervention arm and booster
-- Create diagnostic plots and assess assumptions
+- Fit the data to the logistic regression model.
+- Use a step-wise variable selection to assess potential important variables.
+- Test for an interaction between intervention arm and booster.
+- Create the diagnostic plots and assess the assumptions.
   
 ** Quantitative Backdrop
 
-Figure [[fig:backdrop]] shows the adjusted hazard risk confidence intervals for the speed cognitive training intervention arm with booster intervention sessions (interval A), and the speed cognitive intervention arm without booster intervention sessions (interval B).
-Since this metric is relative to the baseline, we attribute 1.00 as the null hypothesis that there is no evidence for a change in likelihood of being diagnosed with ADRD.
+Figure [[fig:backdrop]] shows the adjusted hazard risk confidence intervals for the speed cognitive training intervention arm with booster intervention sessions (interval A), and the speed cognitive intervention arm without booster intervention sessions (interval B). This these confidence intervals were the ones found in the research paper, this is not from the hypothetical logistic regression model.
+Since this metric is relative to the baseline, we attribute 1.00 as the null hypothesis that there is no evidence for a change in likelihood of being diagnosed with ADRD. This paper referenced a previous paper for their power calculations, which determined that the minimal distinction between effectiveness from the baseline is 0.20% from the baseline with 95% confidence. This calculate took into consideration the assumptions of six Bonferroni-corrected two-sided comparisons, and added margins for the sample size in order to account for participants not finishing the experiment.
 The blue region represents strong evidence that there may be a lower likelihood of being diagnosed with ADRD for the given treatments.
 The green region represents strong evidence that there may be a higher likelihood of being diagnosed with ADRD for the given treatments.
 The gray region represents the boundaries in which the change in likelihood of being diagnosed with ADRD relative to the baseline is deemed too small to be considered a valuable difference.
@@ -158,15 +156,26 @@ It is estimated that the speed cognitive training intervention relative to basel
 
 ** Visualization
 
-Since we are using a logistic regression GLM to model the the likelihood of developing ADRD after the 20-year follow-up for each intervention arm and booster status, we have a few choices for visualizing the results. In this scenario, tableplots would provide the most information in a single plot. The hazard risk would be the y-axis, with an HR of 1.00 to split the plot. Then, we can see the how the likelihood differs between cognitive intervention training and booster status, age, sex, and other factors.
+
+Since we are using a logistic regression GLM to hypothetically model the odds of developing ADRD after the 20-year follow-up for each intervention arm and booster status, we have a few choices for visualizing the results. In this scenario, tableplots would provide the most information in a single plot. We can use it to visualize the odds for each intervention with and without booster, sex, age, and even location site. Figure [[fig:visualization]] shows just a few of the possible table plots.
 
 #+ATTR_LATEX: :placement [H]
 #+NAME: fig:visualization
-#+ATTR_LATEX: :width 0.7\linewidth :center t
-#+CAPTION: Illustration of what a tableplot for the impact of cognitive training invervention arms on likelihood of ADRD diagnosis.
+#+ATTR_LATEX: :width 0.5\linewidth :center t
+#+CAPTION: Illustration of what a tableplot for the impact of the speed cognitive trainings with and without booster sessions, and sex of the participant on odds of ADRD diagnosis.
 file:visualization.jpg
 
-Describe at least one figure you could make, and provide a sketch to summarize results (e.g., effects plot (or your own plots) for visualizing and discussing more complex components in detail (i.e., interactions).)
+
+To visualize whether there is an interaction between the speed cognitive training intervention and booster sessions, we can use an effects plot, as shown in figure [[fig:effects]].
+
+#+ATTR_LATEX: :placement [H]
+#+NAME: fig:effects
+#+ATTR_LATEX: :width 0.5\linewidth :center t
+#+CAPTION: Illustration of effects plot to visualize the interaction between the speed cognitive training intervention and booster sessions.
+file:effects.jpg
+
+
+
 
 * Scope of Inference
 
@@ -175,4 +184,4 @@ For 65+ year old patients recruited between March 1998 and October 1999 with Med
 
 * Conclusion
 
-
+After analyzing the possible likelihood of being diagnosed with ADRD after the patients underwent either speed-related cognitive training intervention with a booster and without a booster, we can use the quantitative backdrop to interpret the results of our two intervals. In the context of the study, the point estimation for the speed-related cognitive training intervention arm with booster sessions is 0.75, which exceeds the study's definition of an effective difference between baseline (0.20%). This signifies that intervening ADRD-prone participants with speed-related cognitive training sessions and booster sessions may lower the likelihood of being diagnosed with ADRD by between 5-59%, where the 25% deduction is most compatible with the data, and results around 5% and 59% are less compatible with the data. Possible future work for this study include normalizing the data to better represent the underrepresented classes of participants, expanding the scope past one Medicare, and identifying trends and differences between site locations. This study contained 76% females, and 26% minority race, so attempting to gain additional information for the underrepesented groups could teach us more about the effects of likelihood of being diagnosed with ADRD. Furthermore, this paper only touched on the base-form of Medicare and excluded other insurance plans, including Medicare Advantage, which may correlate with higher wage. It would be interesting to see how these potentially higher-earning individuals compare with Medicare claims data on the likelihood of being diagnosed with ADRD. Finally, this project only analyzed six locations where five out of six of them were universities. Further research could broaden this scope to develop a more accurate depiction of the average population of people, rather than the convenience of this study.
